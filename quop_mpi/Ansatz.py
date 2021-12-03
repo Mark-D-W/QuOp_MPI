@@ -223,6 +223,14 @@ class Ansatz:
 
         self.setup_optimiser = True
 
+
+    def set_custom_optimiser(self, optimiser, optimiser_args=None, optimiser_log=None):
+        self.optimiser = optimiser
+        self.optimiser_args = optimiser_args
+        self.optimiser_log = optimiser_log
+        self.setup_optimiser = True
+
+
     def set_depth(self, depth):
         """Define the circuit depth, :math:`D`.
 
