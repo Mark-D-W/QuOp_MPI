@@ -270,7 +270,7 @@ class Ansatz:
         )
 
 
-    def set_custom_optimiser(self, optimiser, optimiser_args=None, optimiser_log=None):
+    def set_custom_optimiser(self, optimiser, optimiser_args={}, optimiser_log=None):
         self.optimiser = optimiser
         self.optimiser_args = optimiser_args
         self.optimiser_log = optimiser_log
