@@ -8,7 +8,7 @@ import numpy as np
 from mpi4py import MPI
 from .__utils.__interface import interface
 from .__utils.__mpi import shrink_communicator, gather_array
-    
+
 def forward_differences(variational_parameters, var, evaluate):
     x = variational_parameters
     h = 1.4901161193847656e-08
@@ -16,7 +16,7 @@ def forward_differences(variational_parameters, var, evaluate):
     x[var] += h
     expectation_forward = evaluate(x)
     return (expectation_forward - expectation)/h
-    
+
 def central(variational_parameters, var, evaluate):
     x = variational_parameters
     h = 1.4901161193847656e-08
@@ -149,7 +149,7 @@ class Ansatz:
         self.objective_map_parameters = [
             "expectation",
         ]
-            
+
         self.jacobian_parameters = [
             "evaluate",
             "var",
@@ -210,7 +210,7 @@ class Ansatz:
         """Defines the classical optimiser algorithm used, arguments passed to
         the optimiser and fields in the optimiser dictionary to write to the
         log file (when using :meth:`~system.log_results`). QuOp_MPI supports
-        optimisers provided by SciPy through its minimize method 
+        optimisers provided by SciPy through its minimize method
         `minimize <http://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html>`_
         and optimisers provided by the `NLopt
         <http://nlopt.readthedocs.io/en/latest/>`_ package with respect to
@@ -244,7 +244,7 @@ class Ansatz:
             from quop_mpi.__utils.__nlopt_wrap import minimize as nlopt_minimize
             self.optimiser = nlopt_minimize
         elif callable(optimiser):
-            self.optimsier = optimsier
+            self.optimiser = optimiser
 
         self.optimiser_args = optimiser_args
         self.optimiser_log = optimiser_log
@@ -256,11 +256,11 @@ class Ansatz:
             else:
                 self.jacobian_input = [forward_differences]
                 self.optimiser_args["jac"] = self.__mpi_jacobian
-               
+
         self.setup_optimiser = True
-        
+
     def __parse_jacobian(self):
-        
+
         self.jacobian = interface(
             self,
             self.jacobian_input[0],
@@ -775,7 +775,7 @@ class Ansatz:
                     {"method": "BFGS", 'options':{'gtol':1e-3}},
                     ["fun", "nfev", "success"],
                 )
-                
+
             if self.jacobian_input is not None:
                 self.__parse_jacobian()
 
@@ -920,13 +920,13 @@ class Ansatz:
             if self.COMM_OPT.Get_rank() == 0:
                 self.n_evolutions += 1
                 self.last_evaluated = x
-                
+
     def evaluate(self, x):
         # returns the expectation value given variational parameters 'x'
         if not np.array_equal(self.last_evaluated, x):
             self.evolve_state(x)
         return self.__get_expectation_value()
-        
+
     def execute(self, variational_parameters=None):
         """Execute the QVA algorithm.
 
@@ -1614,7 +1614,7 @@ class Ansatz:
         self.variational_parameters = self.COMM_JAC.bcast(x, 0)
 
         partials = []
- 
+
         if self.COMM.Get_rank() != 0:
             for var in self.var_map[self.colours[self.COMM.Get_rank()]]:
                 self.jacobian.update_parameters()
