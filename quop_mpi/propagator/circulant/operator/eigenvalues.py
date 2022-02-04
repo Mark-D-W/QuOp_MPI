@@ -27,7 +27,7 @@ def complete(
     graph_array = np.ones(system_size, dtype = np.float64)
     graph_array[0] = 0
 
-    return fqwoa_mpi.graph_eigenvalues(graph_array, local_o, local_o_offset)
+    return fqwoa_mpi.graph_eigenvalues(graph_array, local_o, local_o_offset)/system_size
 
 def graph(
         system_size,
